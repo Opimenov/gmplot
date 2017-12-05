@@ -7,9 +7,9 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name = 'gmplot',
+    name = 'gmplot_apg',
     version = __version__,
-    author = 'Michael Woods',
+    author = 'Michael Woods, mods Alex Pimenov',
     author_email = 'physicsmichael@gmail.com',
     url = 'https://github.com/vgm64/gmplot',
     description = 'Provide a matplotlib like interface to plotting data with Google Maps',
