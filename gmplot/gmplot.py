@@ -5,13 +5,11 @@ import os
 
 from .color_dicts import mpl_color_map, html_color_codes
 
-
 def safe_iter(var):
     try:
         return iter(var)
     except TypeError:
         return [var]
-
 
 class GoogleMapPlotter(object):
 
@@ -46,22 +44,23 @@ class GoogleMapPlotter(object):
     def grid(self, slat, elat, latin, slng, elng, lngin):
         self.gridsetting = [slat, elat, latin, slng, elng, lngin]
 
-    def marker(self, lat, lng, color='#FF0000', c=None, title="no implementation"):
+    def marker(self, lat, lng, title, color='#FF0000', c=None):
         if c:
             color = c
         color = self.color_dict.get(color, color)
         color = self.html_color_codes.get(color, color)
         self.points.append((lat, lng, color[1:], title))
 
-    def scatter(self, lats, lngs, color=None, size=None, marker=True, c=None, s=None, **kwargs):
+    def scatter(self, lats, lngs, titles, color=None, size=None, marker=True,\
+                                  c=None, s=None, **kwargs):
         color = color or c
         size = size or s or 40
         kwargs["color"] = color
         kwargs["size"] = size
         settings = self._process_kwargs(kwargs)
-        for lat, lng in zip(lats, lngs):
+        for lat, lng, title in zip(lats, lngs, titles):
             if marker:
-                self.marker(lat, lng, settings['color'])
+                self.marker(lat, lng, title, settings['color'])
             else:
                 self.circle(lat, lng, size, **settings)
 
@@ -237,6 +236,7 @@ class GoogleMapPlotter(object):
     def write_points(self, f):
         for point in self.points:
             self.write_point(f, point[0], point[1], point[2], point[3])
+            #point[3] is the title
 
     def get_cycle(self, lat, lng, rad):
         # unit of radius: meter
@@ -284,7 +284,7 @@ class GoogleMapPlotter(object):
         f.write('\t\tvar img = new google.maps.MarkerImage(\'%s\');\n' %
                 (self.coloricon % color))
         f.write('\t\tvar marker = new google.maps.Marker({\n')
-        f.write('\t\ttitle: "%s",\n' % title)
+        f.write('\t\t title: "%s",\n' % title)
         f.write('\t\ticon: img,\n')
         f.write('\t\tposition: latlng\n')
         f.write('\t\t});\n')
