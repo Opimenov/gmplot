@@ -7,7 +7,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name = 'gmplot_apg',
+    name = 'gmplot',
     version = __version__,
     author = 'Michael Woods, mods Alex Pimenov',
     author_email = 'physicsmichael@gmail.com',
